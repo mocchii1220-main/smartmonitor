@@ -53,16 +53,16 @@ const panels=[
  ['地震情報',async()=>{if(!eq)return'<div class="sm">地震情報を取得中…</div>';
    return `<div class="sm">最大震度</div><div class="big">${sc(eq.scale)}</div>
    <div class="mid">${esc(eq.name||'調査中')}</div><div>${eq.mag>0?'M'+eq.mag.toFixed(1):'M不明'}</div><small>${esc(eq.time)}</small>`}],
- ['豆知識',async()=>`<div class="q">${esc(pick(await load('trivia'),doy(new Date())+Math.floor(Date.now()/12e5)))}</div>`],
+ ['豆知識',async()=>`<div class="q">${esc(pick(await load('trivia'),Math.floor(Math.random()*1e6)))}</div>`],
  ['今日はなんの日？',async()=>{const d=new Date(),t=await load('today'),l=t[`${pad(d.getMonth()+1)}-${pad(d.getDate())}`];
-   return `<div class="sm">${d.getMonth()+1}月${d.getDate()}日</div><div class="mid">${esc(l?l.join('・'):'(登録なし)')}</div>`}],
+   return `<div class="sm">${d.getMonth()+1}月${d.getDate()}日</div><div class="mid">${esc(l?l.join('・'):`今年${doy(d)}日目`)}</div>`}],
  ['天気',async()=>{const w=await getWeather();const f=w&&w.forecasts&&w.forecasts[0];
    if(!f)return'<div class="sm">天気を取得できません</div>';
    const t=f.temperature.max.celsius??f.temperature.min.celsius;
    return `<img src="${esc(f.image.url)}" alt="${esc(f.telop)}"><div class="big">${t==null?'--':esc(t)}°</div>
    <div>${esc(f.telop)}</div><small>${esc(w.location.city)}・今日の${f.temperature.max.celsius!=null?'最高':'最低'}気温</small>`}],
- ['365日の名言',async()=>{const q=pick(await load('quotes'),doy(new Date())-1);return `<div class="q">「${esc(q.text)}」</div><small>${esc(q.by)}</small>`}],
- ['今日の色',async()=>{const c=pick(await load('colors'),doy(new Date())-1);
+ ['365日の名言',async()=>{const q=pick(await load('quotes'),dayRand(1));return `<div class="q">「${esc(q.text)}」</div><small>${esc(q.by)}</small>`}],
+ ['今日の色',async()=>{const c=pick(await load('colors'),dayRand(2));
    const [r,g,b]=[1,3,5].map(i=>parseInt(c.hex.substr(i,2),16));const dark=(r*299+g*587+b*114)/1000<140;
    return `<div style="background:${c.hex};color:${dark?'#fff':'#111'};padding:5vh 6vw;border-radius:2vh"><div class="mid">${esc(c.name)}</div><small style="color:inherit;opacity:.7">${c.hex}</small></div>`}],
  ['今年の残り',async()=>{const d=new Date(),y=d.getFullYear(),tot=(new Date(y+1,0,1)-new Date(y,0,1))/864e5,n=doy(d),left=tot-n;
@@ -70,6 +70,7 @@ const panels=[
  ['一行詩',async()=>`<div class="q" style="text-align:center">${esc(pick(await load('poems'),Math.floor(Math.random()*999)))}</div>`],
  ['clock',async()=>'']
 ];
+const dayRand=s=>{const d=new Date();let x=Math.imul(d.getFullYear()*400+doy(d),2654435761)^s;x=Math.imul(x^x>>>15,2246822519);x=Math.imul(x^x>>>13,3266489917);return (x^x>>>16)>>>0};
 const pick=(a,i)=>a[((i%a.length)+a.length)%a.length];
 let idx=0,timer;
 const dots=$('#dots');panels.forEach(()=>dots.append(document.createElement('b')));
