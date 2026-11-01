@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<title>Smart Monitor</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="app">
+<div id="sky"><div class="bg day"></div><div class="bg eve"></div><div class="bg night"></div><div id="stars"></div></div>
+<main>
+ <section id="left"><div id="dial"><svg viewBox="-100 -100 200 200"><circle class="ring" r="96"/><g id="ticks"></g><line id="hh" x1="0" y1="-58" x2="0" y2="-74"/><line id="mh" x1="0" y1="-58" x2="0" y2="-84"/><circle id="sd" cx="0" cy="-96" r="3.4"/></svg><div id="dt"><div id="time">--:--</div><div id="date"></div></div></div><div id="info"><div id="greet"></div><div id="bars"></div><div id="cal"></div></div></section>
+ <section id="right"><div id="label"></div><div id="stage"></div>
+  <nav id="dots"></nav><button id="gear" aria-label="設定">⚙</button></section>
+</main>
+<i id="conn" title="地震情報の接続状態"></i>
+<div id="eew" hidden><h1>緊急地震速報</h1><div id="eewbody"></div><button id="ack">確認</button></div>
+<div id="start">タップで開始<small>全画面・画面常時点灯・警報音を有効にします</small></div>
+<dialog id="dlg"><form method="dialog">
+ <h2>設定</h2>
+ <label>地域 <select id="preset"></select></label>
+ <label>地域コード <input id="city" inputmode="numeric" placeholder="例: 400040"></label>
+ <p><small>コードは weather.tsukumijima.net の city ID</small></p>
+ <menu><button value="cancel">閉じる</button><button id="save" value="ok">保存</button></menu>
+</form></dialog>
+</div>
+<script src="app.js"></script></body></html>
